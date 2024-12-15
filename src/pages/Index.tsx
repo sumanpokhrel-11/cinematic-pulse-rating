@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import MovieBanner from "../components/MovieBanner";
+import TrendingMovies from "../components/TrendingMovies";
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
           director="Saroj Poudel"
           producers={["Binod Poudel", "Patrick Subedi"]}
         />
+        <TrendingMovies />
       </main>
     </div>
   );
