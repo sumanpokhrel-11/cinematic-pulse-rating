@@ -46,15 +46,16 @@ const Navbar = () => {
           </>
         ) : (
           <div className="flex items-center space-x-8">
-            <NavLink to="/" icon={<Home className="w-5 h-5" />} text="Home" />
-            <NavLink to="/movies" icon={<Film className="w-5 h-5" />} text="Movies" />
-            <NavLink to="/genre" icon={<List className="w-5 h-5" />} text="Genre" />
-            <NavLink to="/profile" icon={<User className="w-5 h-5" />} text="Profile" />
+            <NavLink to="/" icon={<Home className="w-5 h-5" />} text="Home" onClick={() => {}} />
+            <NavLink to="/movies" icon={<Film className="w-5 h-5" />} text="Movies" onClick={() => {}} />
+            <NavLink to="/genre" icon={<List className="w-5 h-5" />} text="Genre" onClick={() => {}} />
+            <NavLink to="/profile" icon={<User className="w-5 h-5" />} text="Profile" onClick={() => {}} />
             <NavLink 
               to="/watchlist" 
               icon={<BookmarkPlus className="w-5 h-5" />} 
               text="Watchlist"
               className="bg-green-700 px-4 py-2 rounded-lg"
+              onClick={() => {}}
             />
           </div>
         )}
@@ -63,7 +64,15 @@ const Navbar = () => {
   );
 };
 
-const NavLink = ({ to, icon, text, className = "", onClick }) => (
+interface NavLinkProps {
+  to: string;
+  icon: React.ReactNode;
+  text: string;
+  className?: string;
+  onClick: () => void;
+}
+
+const NavLink = ({ to, icon, text, className = "", onClick }: NavLinkProps) => (
   <Link
     to={to}
     className={`flex items-center space-x-2 text-cinema-text hover:text-cinema-accent transition-colors ${className}`}
