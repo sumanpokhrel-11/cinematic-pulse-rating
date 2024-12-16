@@ -13,6 +13,9 @@ const movieDetails = {
   genres: ["Action", "Sci-Fi", "Thriller"],
   description: "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
   imageUrl: "https://image.tmdb.org/t/p/original/8IB2e4r4oVhHnANbnm7O3Tj6tF8.jpg",
+  trailerUrl: "https://www.youtube.com/embed/YoHD9XEInc0",
+  freeMovieUrl: "https://www.youtube.com/embed/free-movie-id", // This would be the actual YouTube embed URL if available
+  isAvailableForFree: true,
   director: {
     name: "Christopher Nolan",
     image: "https://image.tmdb.org/t/p/w500/xuAIuYSmsUzKlUMBFGVZaWsY3DZ.jpg"
@@ -86,6 +89,34 @@ const MovieDetails = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
+            {/* Trailer Section */}
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-4">Official Trailer</h2>
+              <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                <iframe
+                  src={movieDetails.trailerUrl}
+                  className="absolute top-0 left-0 w-full h-full rounded-lg"
+                  allowFullScreen
+                  title={`${movieDetails.title} Trailer`}
+                ></iframe>
+              </div>
+            </section>
+
+            {/* Free Movie Section - Only show if available */}
+            {movieDetails.isAvailableForFree && (
+              <section>
+                <h2 className="text-2xl font-bold text-white mb-4">Watch Movie</h2>
+                <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                  <iframe
+                    src={movieDetails.freeMovieUrl}
+                    className="absolute top-0 left-0 w-full h-full rounded-lg"
+                    allowFullScreen
+                    title={`${movieDetails.title} Full Movie`}
+                  ></iframe>
+                </div>
+              </section>
+            )}
+
             <section>
               <h2 className="text-2xl font-bold text-white mb-4">Synopsis</h2>
               <p className="text-white/80 leading-relaxed">
