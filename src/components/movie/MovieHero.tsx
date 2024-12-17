@@ -33,7 +33,7 @@ const MovieHero = ({
 }: MovieHeroProps) => {
   return (
     <div 
-      className="w-full h-[600px] relative bg-cover bg-center"
+      className="w-full min-h-[400px] md:h-[600px] relative bg-cover bg-center"
       style={{
         backgroundImage: `url(${backdropUrl})`,
       }}
@@ -42,7 +42,7 @@ const MovieHero = ({
         <div className="container mx-auto h-full px-4 py-8 flex items-center">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             {/* Movie Poster */}
-            <div className="w-64 flex-shrink-0">
+            <div className="w-48 md:w-64 mx-auto md:mx-0 flex-shrink-0">
               <img
                 src={imageUrl}
                 alt={title}
@@ -52,11 +52,11 @@ const MovieHero = ({
 
             {/* Movie Info */}
             <div className="flex-1 text-white">
-              <h1 className="text-4xl font-bold mb-2">
+              <h1 className="text-3xl md:text-4xl font-bold mb-2 text-center md:text-left">
                 {title} <span className="font-normal text-white/70">({releaseYear})</span>
               </h1>
               
-              <div className="flex items-center gap-2 text-sm mb-6">
+              <div className="flex flex-wrap items-center gap-2 text-sm mb-6 justify-center md:justify-start">
                 <span>{releaseDate}</span>
                 <span>•</span>
                 {genres.map((genre, index) => (
@@ -70,7 +70,7 @@ const MovieHero = ({
               </div>
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-4 mb-6">
+              <div className="flex items-center gap-4 mb-6 justify-center md:justify-start">
                 <div className="flex items-center gap-3">
                   <div className="flex items-center justify-center w-16 h-16 rounded-full bg-cinema-primary border-4 border-cinema-accent">
                     <span className="text-xl font-bold">{rating}</span>
@@ -90,15 +90,15 @@ const MovieHero = ({
               </div>
 
               {/* Tagline */}
-              <p className="text-lg italic text-white/70 mb-4">{tagline}</p>
+              <p className="text-lg italic text-white/70 mb-4 text-center md:text-left">{tagline}</p>
 
               {/* Overview */}
-              <h3 className="text-xl font-semibold mb-2">Overview</h3>
-              <p className="text-white/90 mb-6 max-w-3xl">{overview}</p>
+              <h3 className="text-xl font-semibold mb-2 text-center md:text-left">Overview</h3>
+              <p className="text-white/90 mb-6 max-w-3xl text-center md:text-left">{overview}</p>
 
               {/* Director */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
+                <div className="text-center md:text-left">
                   <h4 className="font-medium mb-1">{director.name}</h4>
                   <p className="text-sm text-white/70">Director</p>
                 </div>

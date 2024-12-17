@@ -7,7 +7,7 @@ interface MediaSectionProps {
 
 const MediaSection = ({ title, trailerUrl, freeMovieUrl, isAvailableForFree }: MediaSectionProps) => {
   return (
-    <section>
+    <section className="px-4 md:px-0">
       <h2 className="text-2xl font-bold text-white mb-6">Media</h2>
       
       {/* Trailer */}

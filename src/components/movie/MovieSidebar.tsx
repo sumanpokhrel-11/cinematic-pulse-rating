@@ -9,7 +9,7 @@ interface MovieSidebarProps {
 
 const MovieSidebar = ({ status, originalLanguage, budget, revenue }: MovieSidebarProps) => {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 px-4 md:px-0">
       <section className="space-y-4">
         <div className="flex items-center gap-2">
           <CircleDot className="w-4 h-4 text-cinema-accent" />
