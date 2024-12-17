@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import TrendingMovies from "../components/TrendingMovies";
 import FeaturedCarousel from "../components/FeaturedCarousel";
 
@@ -10,6 +11,7 @@ const Index = () => {
         <FeaturedCarousel />
         <TrendingMovies />
       </main>
+      <Footer />
     </div>
   );
 };
