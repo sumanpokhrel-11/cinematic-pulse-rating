@@ -3,6 +3,8 @@ import MovieHero from "@/components/movie/MovieHero";
 import CastSection from "@/components/movie/CastSection";
 import MediaSection from "@/components/movie/MediaSection";
 import MovieSidebar from "@/components/movie/MovieSidebar";
+import ReviewSection from "@/components/movie/ReviewSection";
+import RecommendationSection from "@/components/movie/RecommendationSection";
 
 // Mock data - in a real app, this would come from an API
 const movieDetails = {
@@ -44,6 +46,62 @@ const movieDetails = {
       name: "Ellen Page",
       role: "Ariadne",
       image: "https://image.tmdb.org/t/p/w500/5dL5MROP8DhHJVTswuuAABgGxeS.jpg"
+    },
+    {
+      name: "Tom Hardy",
+      role: "Eames",
+      image: "https://image.tmdb.org/t/p/w500/yHG6piv1Fs3UhLk6LGxGrq4YYMS.jpg"
+    },
+    {
+      name: "Ken Watanabe",
+      role: "Saito",
+      image: "https://image.tmdb.org/t/p/w500/psAXOYp9SBOXvg6AXzARDedNQ9P.jpg"
+    }
+  ],
+  reviews: [
+    {
+      author: "John Doe",
+      rating: 9,
+      content: "A masterpiece of modern cinema that challenges the boundaries of imagination and reality.",
+      date: "February 15, 2024",
+      avatarUrl: "https://i.pravatar.cc/150?img=1"
+    },
+    {
+      author: "Jane Smith",
+      rating: 8.5,
+      content: "Christopher Nolan outdoes himself with this mind-bending thriller that keeps you guessing until the end.",
+      date: "February 10, 2024",
+      avatarUrl: "https://i.pravatar.cc/150?img=2"
+    }
+  ],
+  recommendations: [
+    {
+      id: 2,
+      title: "The Matrix",
+      posterUrl: "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
+      rating: 88,
+      releaseDate: "1999"
+    },
+    {
+      id: 3,
+      title: "Interstellar",
+      posterUrl: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+      rating: 84,
+      releaseDate: "2014"
+    },
+    {
+      id: 4,
+      title: "The Prestige",
+      posterUrl: "https://image.tmdb.org/t/p/w500/5MXyQfz8xUP3dIFPTu8lL1zUhSZ.jpg",
+      rating: 82,
+      releaseDate: "2006"
+    },
+    {
+      id: 5,
+      title: "Shutter Island",
+      posterUrl: "https://image.tmdb.org/t/p/w500/4GDy0PHYX3VRXUtwK5ysFbg3kEx.jpg",
+      rating: 83,
+      releaseDate: "2010"
     }
   ]
 };
@@ -55,7 +113,6 @@ const MovieDetails = () => {
       
       <MovieHero {...movieDetails} />
 
-      {/* Content Section */}
       <div className="container mx-auto py-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
@@ -67,6 +124,7 @@ const MovieDetails = () => {
               freeMovieUrl={movieDetails.freeMovieUrl}
               isAvailableForFree={movieDetails.isAvailableForFree}
             />
+            <ReviewSection reviews={movieDetails.reviews} />
           </div>
 
           {/* Sidebar */}
@@ -78,6 +136,9 @@ const MovieDetails = () => {
           />
         </div>
       </div>
+
+      {/* Recommendations Section - Full Width */}
+      <RecommendationSection movies={movieDetails.recommendations} />
     </div>
   );
 };

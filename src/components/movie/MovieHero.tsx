@@ -33,16 +33,16 @@ const MovieHero = ({
 }: MovieHeroProps) => {
   return (
     <div 
-      className="w-full min-h-[400px] md:h-[600px] relative bg-cover bg-center"
+      className="w-full min-h-[500px] md:min-h-[600px] relative bg-cover bg-center"
       style={{
         backgroundImage: `url(${backdropUrl})`,
       }}
     >
       <div className="absolute inset-0 bg-black/60">
-        <div className="container mx-auto h-full px-4 py-8 flex items-center">
+        <div className="container mx-auto h-full px-4 py-8 md:py-12">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             {/* Movie Poster */}
-            <div className="w-48 md:w-64 mx-auto md:mx-0 flex-shrink-0">
+            <div className="w-48 md:w-64 mx-auto md:mx-0 flex-shrink-0 mt-16 md:mt-0">
               <img
                 src={imageUrl}
                 alt={title}
@@ -52,7 +52,7 @@ const MovieHero = ({
 
             {/* Movie Info */}
             <div className="flex-1 text-white">
-              <h1 className="text-3xl md:text-4xl font-bold mb-2 text-center md:text-left">
+              <h1 className="text-2xl md:text-4xl font-bold mb-2 text-center md:text-left">
                 {title} <span className="font-normal text-white/70">({releaseYear})</span>
               </h1>
               
