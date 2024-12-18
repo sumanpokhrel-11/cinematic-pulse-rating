@@ -94,7 +94,7 @@ const MovieHero = ({
 
               {/* Overview */}
               <h3 className="text-xl font-semibold mb-2 text-center md:text-left">Overview</h3>
-              <p className="text-white/90 mb-6 max-w-3xl text-center md:text-left">{overview}</p>
+              <p className="text-white/90 mb-8 max-w-3xl text-center md:text-left">{overview}</p>
 
               {/* Director */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
