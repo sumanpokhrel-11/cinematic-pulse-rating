@@ -7,6 +7,8 @@ import {
 } from "@/components/ui/carousel";
 import { Star, Clock, Calendar } from "lucide-react";
 import { Button } from "./ui/button";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 
 const featuredMovies = [
   {
@@ -45,8 +47,19 @@ const featuredMovies = [
 ];
 
 const FeaturedCarousel = () => {
+  const plugin = useRef(
+    Autoplay({ delay: 5000, stopOnInteraction: true, stopOnMouseEnter: true })
+  );
+
   return (
-    <Carousel className="w-full max-w-[100vw] mx-auto">
+    <Carousel
+      className="w-full max-w-[100vw] mx-auto"
+      opts={{
+        align: "start",
+        loop: true,
+      }}
+      plugins={[plugin.current]}
+    >
       <CarouselContent>
         {featuredMovies.map((movie) => (
           <CarouselItem key={movie.id}>
