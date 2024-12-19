@@ -1,8 +1,20 @@
-import { Home, Film, List, User, BookmarkPlus, Menu, X } from "lucide-react";
+import { Home, Film, List, User, BookmarkPlus, Menu, X, ChevronDown } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+const genres = [
+  "Action", "Adventure", "Animation", "Comedy", "Crime", 
+  "Documentary", "Drama", "Family", "Fantasy", "Horror", 
+  "Mystery", "Romance", "Sci-Fi", "Thriller", "War"
+];
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,6 +31,28 @@ const Navbar = () => {
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const GenreDropdown = () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="flex items-center space-x-2 text-cinema-text hover:text-cinema-accent transition-all duration-300">
+        <List className="w-5 h-5" />
+        <span className="font-medium">Genres</span>
+        <ChevronDown className="w-4 h-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="bg-cinema-primary/95 backdrop-blur-md border-cinema-accent/20">
+        {genres.map((genre) => (
+          <DropdownMenuItem
+            key={genre}
+            className="text-cinema-text hover:text-cinema-accent hover:bg-cinema-accent/10 cursor-pointer"
+          >
+            <Link to={`/movies?genre=${genre.toLowerCase()}`} className="w-full">
+              {genre}
+            </Link>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 
   return (
     <nav 
@@ -58,7 +92,9 @@ const Navbar = () => {
                 <div className="flex flex-col space-y-4">
                   <NavLink to="/" icon={<Home className="w-5 h-5" />} text="Home" onClick={toggleMenu} />
                   <NavLink to="/movies" icon={<Film className="w-5 h-5" />} text="Movies" onClick={toggleMenu} />
-                  <NavLink to="/genre" icon={<List className="w-5 h-5" />} text="Genre" onClick={toggleMenu} />
+                  <div className="pl-2">
+                    <GenreDropdown />
+                  </div>
                   <NavLink to="/profile" icon={<User className="w-5 h-5" />} text="Profile" onClick={toggleMenu} />
                   <NavLink 
                     to="/watchlist" 
@@ -87,13 +123,7 @@ const Navbar = () => {
               isActive={location.pathname === "/movies"} 
               onClick={() => {}}
             />
-            <NavLink 
-              to="/genre" 
-              icon={<List className="w-5 h-5" />} 
-              text="Genre" 
-              isActive={location.pathname === "/genre"} 
-              onClick={() => {}}
-            />
+            <GenreDropdown />
             <NavLink 
               to="/profile" 
               icon={<User className="w-5 h-5" />} 
