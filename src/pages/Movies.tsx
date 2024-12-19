@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Star } from "lucide-react";
+import { Star, Film, Filter } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import {
   Pagination,
@@ -72,48 +72,62 @@ const Movies = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-b from-cinema-primary via-cinema-primary to-black">
       <Navbar />
       <main className="container mx-auto px-4 pt-24 pb-12">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-cinema-text">Movies</h1>
-          <div className="flex items-center gap-4">
-            <select className="bg-cinema-primary text-cinema-text border border-cinema-accent rounded-lg px-4 py-2">
-              <option value="latest">Latest</option>
-              <option value="popular">Popular</option>
-              <option value="rating">Top Rated</option>
-            </select>
+        {/* Header Section */}
+        <div className="relative mb-12">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 backdrop-blur-sm bg-black/30 p-6 rounded-xl border border-cinema-accent/20">
+            <div className="flex items-center gap-4">
+              <Film className="w-8 h-8 text-cinema-accent animate-pulse" />
+              <div>
+                <h1 className="text-3xl font-bold text-white mb-2">Discover Movies</h1>
+                <p className="text-white/70">Explore our collection of {allMovies.length} amazing films</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <select className="bg-cinema-primary/50 text-white border border-cinema-accent/30 rounded-lg px-4 py-2 backdrop-blur-sm hover:border-cinema-accent transition-colors duration-300">
+                <option value="latest">Latest Releases</option>
+                <option value="popular">Most Popular</option>
+                <option value="rating">Top Rated</option>
+              </select>
+              <button className="flex items-center gap-2 bg-cinema-primary/50 text-white border border-cinema-accent/30 rounded-lg px-4 py-2 backdrop-blur-sm hover:border-cinema-accent transition-colors duration-300">
+                <Filter className="w-4 h-4" />
+                Filters
+              </button>
+            </div>
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
+        {/* Movies Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-12">
           {currentMovies.map((movie) => (
             <Card 
               key={movie.id}
-              className="group bg-cinema-primary border-cinema-primary hover:border-cinema-accent transition-all duration-300 cursor-pointer overflow-hidden"
+              className="group bg-black/40 border-cinema-accent/20 hover:border-cinema-accent transition-all duration-500 cursor-pointer overflow-hidden backdrop-blur-sm"
             >
               <CardContent className="p-0">
                 <div className="relative aspect-[2/3]">
                   <img
                     src={movie.imageUrl}
                     alt={movie.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                     <div className="absolute bottom-0 left-0 p-4">
                       <div className="flex items-center space-x-2 mb-2">
-                        <Star className="w-4 h-4 text-cinema-accent fill-current" />
+                        <Star className="w-4 h-4 text-cinema-accent fill-cinema-accent" />
                         <span className="text-sm font-bold text-white">{movie.rating}</span>
                       </div>
                       <div className="space-y-1">
                         <p className="text-sm text-white/80">{movie.year}</p>
-                        <p className="text-sm text-white/80">{movie.genre}</p>
+                        <p className="text-sm text-cinema-accent">{movie.genre}</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="p-4">
-                  <h3 className="text-lg font-medium text-cinema-text group-hover:text-cinema-accent transition-colors duration-300">
+                <div className="p-4 bg-gradient-to-t from-black/60 to-transparent">
+                  <h3 className="text-lg font-medium text-white group-hover:text-cinema-accent transition-colors duration-300">
                     {movie.title}
                   </h3>
                 </div>
@@ -122,50 +136,54 @@ const Movies = () => {
           ))}
         </div>
 
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage > 1) handlePageChange(currentPage - 1);
-                }}
-                className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-            
-            {getPageNumbers().map((page, index) => (
-              <PaginationItem key={index}>
-                {typeof page === 'number' ? (
-                  <PaginationLink
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      handlePageChange(page);
-                    }}
-                    isActive={currentPage === page}
-                  >
-                    {page}
-                  </PaginationLink>
-                ) : (
-                  <span className="px-4 py-2">...</span>
-                )}
+        {/* Pagination */}
+        <div className="flex justify-center">
+          <Pagination>
+            <PaginationContent className="bg-black/40 backdrop-blur-sm border border-cinema-accent/20 rounded-lg p-2">
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage > 1) handlePageChange(currentPage - 1);
+                  }}
+                  className={`${currentPage === 1 ? 'pointer-events-none opacity-50' : ''} text-white hover:text-cinema-accent transition-colors duration-300`}
+                />
               </PaginationItem>
-            ))}
-            
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage < totalPages) handlePageChange(currentPage + 1);
-                }}
-                className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+              
+              {getPageNumbers().map((page, index) => (
+                <PaginationItem key={index}>
+                  {typeof page === 'number' ? (
+                    <PaginationLink
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePageChange(page);
+                      }}
+                      className={`${currentPage === page ? 'bg-cinema-accent text-white' : 'text-white hover:text-cinema-accent'} transition-colors duration-300`}
+                      isActive={currentPage === page}
+                    >
+                      {page}
+                    </PaginationLink>
+                  ) : (
+                    <span className="px-4 py-2 text-white/50">...</span>
+                  )}
+                </PaginationItem>
+              ))}
+              
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages) handlePageChange(currentPage + 1);
+                  }}
+                  className={`${currentPage === totalPages ? 'pointer-events-none opacity-50' : ''} text-white hover:text-cinema-accent transition-colors duration-300`}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       </main>
     </div>
   );
