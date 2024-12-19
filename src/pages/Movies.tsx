@@ -9,9 +9,10 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { useState } from "react";
 
 // Mock data - in a real app, this would come from an API
-const movies = Array.from({ length: 20 }, (_, i) => ({
+const allMovies = Array.from({ length: 100 }, (_, i) => ({
   id: i + 1,
   title: `Movie ${i + 1}`,
   rating: (Math.random() * 2 + 3).toFixed(1),
@@ -20,7 +21,56 @@ const movies = Array.from({ length: 20 }, (_, i) => ({
   genre: "Action",
 }));
 
+const ITEMS_PER_PAGE = 20;
+
 const Movies = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(allMovies.length / ITEMS_PER_PAGE);
+
+  // Calculate the movies to display for the current page
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentMovies = allMovies.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Generate page numbers to display
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      // Show all pages if total pages is less than max visible
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      // Always show first page
+      pages.push(1);
+      
+      if (currentPage > 3) {
+        pages.push('...');
+      }
+      
+      // Show pages around current page
+      for (let i = Math.max(2, currentPage - 1); i <= Math.min(currentPage + 1, totalPages - 1); i++) {
+        pages.push(i);
+      }
+      
+      if (currentPage < totalPages - 2) {
+        pages.push('...');
+      }
+      
+      // Always show last page
+      pages.push(totalPages);
+    }
+    
+    return pages;
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -37,7 +87,7 @@ const Movies = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-8">
-          {movies.map((movie) => (
+          {currentMovies.map((movie) => (
             <Card 
               key={movie.id}
               className="group bg-cinema-primary border-cinema-primary hover:border-cinema-accent transition-all duration-300 cursor-pointer overflow-hidden"
@@ -75,19 +125,44 @@ const Movies = () => {
         <Pagination>
           <PaginationContent>
             <PaginationItem>
-              <PaginationPrevious href="#" />
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage > 1) handlePageChange(currentPage - 1);
+                }}
+                className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+              />
             </PaginationItem>
+            
+            {getPageNumbers().map((page, index) => (
+              <PaginationItem key={index}>
+                {typeof page === 'number' ? (
+                  <PaginationLink
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handlePageChange(page);
+                    }}
+                    isActive={currentPage === page}
+                  >
+                    {page}
+                  </PaginationLink>
+                ) : (
+                  <span className="px-4 py-2">...</span>
+                )}
+              </PaginationItem>
+            ))}
+            
             <PaginationItem>
-              <PaginationLink href="#" isActive>1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">3</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage < totalPages) handlePageChange(currentPage + 1);
+                }}
+                className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+              />
             </PaginationItem>
           </PaginationContent>
         </Pagination>
