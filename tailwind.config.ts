@@ -53,8 +53,10 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         cinema: {
-          primary: "#003300",
-          accent: "#FFD700",
+          sage: "#6D9773",
+          forest: "#0C3B2E",
+          brown: "#BB8A52",
+          gold: "#FFBA00",
           text: "#FFFFFF",
         },
       },
