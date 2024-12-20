@@ -6,9 +6,17 @@ import LatestReleases from "@/components/LatestReleases";
 import MovieCategories from "@/components/MovieCategories";
 
 const Home = () => {
+  const featuredMovie = {
+    title: "The Dark Knight",
+    rating: 9.0,
+    imageUrl: "/placeholder.svg",
+    director: "Christopher Nolan",
+    producers: ["Emma Thomas", "Charles Roven"]
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      <MovieBanner />
+      <MovieBanner {...featuredMovie} />
       
       <main className="container mx-auto px-4 py-8 space-y-12">
         <FeaturedCarousel />

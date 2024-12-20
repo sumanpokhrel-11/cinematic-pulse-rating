@@ -2,9 +2,10 @@ import { Film } from "lucide-react";
 
 interface MovieListProps {
   type: "watchlist" | "watched";
+  filter?: string;
 }
 
-const MovieList = ({ type }: MovieListProps) => {
+const MovieList = ({ type, filter = "all" }: MovieListProps) => {
   // Mock data - replace with actual data from your state management solution
   const movies = [
     {
@@ -21,7 +22,13 @@ const MovieList = ({ type }: MovieListProps) => {
     },
   ];
 
-  if (movies.length === 0) {
+  // Filter movies based on the filter prop if needed
+  const filteredMovies = filter === "all" ? movies : movies.filter(movie => {
+    // Add your filtering logic here based on the filter value
+    return true; // Placeholder return, implement actual filtering logic
+  });
+
+  if (filteredMovies.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-muted-foreground">
         <Film className="mb-2 h-12 w-12" />
@@ -32,7 +39,7 @@ const MovieList = ({ type }: MovieListProps) => {
 
   return (
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-      {movies.map((movie) => (
+      {filteredMovies.map((movie) => (
         <div
           key={movie.id}
           className="group relative aspect-[2/3] overflow-hidden rounded-lg bg-muted"
