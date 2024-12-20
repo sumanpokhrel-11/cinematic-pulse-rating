@@ -16,6 +16,13 @@ const genres = [
   "Mystery", "Romance", "Sci-Fi", "Thriller", "War"
 ];
 
+const movieCategories = [
+  { name: "All Movies", path: "/movies" },
+  { name: "Upcoming Movies", path: "/movies?category=upcoming" },
+  { name: "Released Movies", path: "/movies?category=released" },
+  { name: "Free on YouTube", path: "/movies?category=youtube" },
+];
+
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -31,6 +38,28 @@ const Navbar = () => {
   }, []);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+
+  const MovieCategoriesDropdown = () => (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="flex items-center space-x-2 text-cinema-text hover:text-cinema-accent transition-all duration-300">
+        <Film className="w-5 h-5" />
+        <span className="font-medium">Movies</span>
+        <ChevronDown className="w-4 h-4" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="bg-cinema-primary/95 backdrop-blur-md border-cinema-accent/20 w-48">
+        {movieCategories.map((category) => (
+          <DropdownMenuItem
+            key={category.name}
+            className="text-cinema-text hover:text-cinema-accent hover:bg-cinema-accent/10 cursor-pointer"
+          >
+            <Link to={category.path} className="w-full">
+              {category.name}
+            </Link>
+          </DropdownMenuItem>
+        ))}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 
   const GenreDropdown = () => (
     <DropdownMenu>
@@ -91,7 +120,9 @@ const Navbar = () => {
               <div className="absolute top-full left-0 right-0 bg-cinema-primary/95 backdrop-blur-md shadow-lg py-4 px-6 animate-in slide-in-from-top duration-200">
                 <div className="flex flex-col space-y-4">
                   <NavLink to="/" icon={<Home className="w-5 h-5" />} text="Home" onClick={toggleMenu} />
-                  <NavLink to="/movies" icon={<Film className="w-5 h-5" />} text="Movies" onClick={toggleMenu} />
+                  <div className="pl-2">
+                    <MovieCategoriesDropdown />
+                  </div>
                   <div className="pl-2">
                     <GenreDropdown />
                   </div>
@@ -116,13 +147,7 @@ const Navbar = () => {
               isActive={location.pathname === "/"} 
               onClick={() => {}}
             />
-            <NavLink 
-              to="/movies" 
-              icon={<Film className="w-5 h-5" />} 
-              text="Movies" 
-              isActive={location.pathname === "/movies"} 
-              onClick={() => {}}
-            />
+            <MovieCategoriesDropdown />
             <GenreDropdown />
             <NavLink 
               to="/profile" 

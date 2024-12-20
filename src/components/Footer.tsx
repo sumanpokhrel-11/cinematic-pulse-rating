@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Instagram, Youtube, Heart, Mail, Phone, MapPin } from "lucide-react";
 import { Separator } from "./ui/separator";
-import { Button } from "./ui/button";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -11,28 +10,6 @@ const Footer = () => {
       {/* Decorative Top Border */}
       <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500" />
       
-      {/* Newsletter Section */}
-      <div className="bg-gradient-to-b from-cinema-primary/50 to-cinema-primary pt-16 pb-8">
-        <div className="container mx-auto px-4">
-          <div className="max-w-xl mx-auto text-center mb-12">
-            <h3 className="text-2xl font-bold text-white mb-4">Join Our Movie Community</h3>
-            <p className="text-cinema-text/80 mb-6">
-              Get weekly updates about new releases, exclusive content, and special events
-            </p>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg bg-black/20 border border-cinema-accent/20 text-white placeholder:text-white/50 focus:outline-none focus:border-cinema-accent"
-              />
-              <Button className="bg-cinema-accent hover:bg-cinema-accent/80 text-black">
-                Subscribe
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer Content */}
       <div className="bg-black/90 backdrop-blur-xl py-12">
         <div className="container mx-auto px-4">
