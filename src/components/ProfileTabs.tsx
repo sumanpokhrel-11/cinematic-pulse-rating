@@ -5,14 +5,29 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Film, ListChecks, Plus } from "lucide-react";
+import { Film, ListChecks } from "lucide-react";
 import MovieList from "./MovieList";
 import TrendingMovies from "./TrendingMovies";
 import ProfileInfo from "./ProfileInfo";
-import { useState } from "react";
+import CustomListCard from "./CustomListCard";
+import { useEffect, useState } from "react";
 
 const ProfileTabs = () => {
   const [customLists, setCustomLists] = useState<string[]>([]);
+
+  // Listen for changes in localStorage
+  useEffect(() => {
+    const lists = JSON.parse(localStorage.getItem('customLists') || '[]');
+    setCustomLists(lists);
+
+    const handleStorageChange = () => {
+      const updatedLists = JSON.parse(localStorage.getItem('customLists') || '[]');
+      setCustomLists(updatedLists);
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   return (
     <Tabs defaultValue="lists" className="w-full">
@@ -63,17 +78,7 @@ const ProfileTabs = () => {
         </Card>
 
         {customLists.map((listName) => (
-          <Card key={listName} className="bg-cinema-forest border-cinema-sage/20">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-cinema-text">
-                <Film className="h-5 w-5" />
-                {listName}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <MovieList type="custom" listName={listName} />
-            </CardContent>
-          </Card>
+          <CustomListCard key={listName} listName={listName} />
         ))}
       </TabsContent>
 

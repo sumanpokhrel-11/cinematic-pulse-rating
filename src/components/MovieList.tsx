@@ -1,5 +1,5 @@
 import { Film, Heart, HeartOff, Plus } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useToast } from "./ui/use-toast";
 import {
@@ -29,32 +29,74 @@ export interface Movie {
 const MovieList = ({ type, filter = "all", listName = "" }: MovieListProps) => {
   const { toast } = useToast();
   const [newListName, setNewListName] = useState("");
-  const [customLists, setCustomLists] = useState<{ [key: string]: Movie[] }>({});
-  
-  // Mock data - replace with actual data from your state management solution
-  const movies = [
-    {
-      id: 1,
-      title: "The Dark Knight",
-      year: 2008,
-      poster: "/placeholder.svg",
-      inWatchlist: true,
-    },
-    {
-      id: 2,
-      title: "Inception",
-      year: 2010,
-      poster: "/placeholder.svg",
-      inWatchlist: false,
-    },
-  ];
+  const [customLists, setCustomLists] = useState<string[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
 
-  const [watchlistMovies, setWatchlistMovies] = useState(
-    movies.map(movie => ({ ...movie }))
-  );
+  useEffect(() => {
+    // Load custom lists from localStorage
+    const savedLists = JSON.parse(localStorage.getItem('customLists') || '[]');
+    setCustomLists(savedLists);
+
+    // Load movies for the specific list type
+    if (type === 'custom' && listName) {
+      const listMovies = JSON.parse(localStorage.getItem(`list_${listName}`) || '[]');
+      setMovies(listMovies);
+    } else {
+      // Mock data for other list types
+      setMovies([
+        {
+          id: 1,
+          title: "The Dark Knight",
+          year: 2008,
+          poster: "/placeholder.svg",
+          inWatchlist: true,
+        },
+        {
+          id: 2,
+          title: "Inception",
+          year: 2010,
+          poster: "/placeholder.svg",
+          inWatchlist: false,
+        },
+      ]);
+    }
+  }, [type, listName]);
+
+  const createNewList = () => {
+    if (newListName.trim()) {
+      const updatedLists = [...customLists, newListName];
+      setCustomLists(updatedLists);
+      localStorage.setItem('customLists', JSON.stringify(updatedLists));
+      localStorage.setItem(`list_${newListName}`, JSON.stringify([]));
+      
+      toast({
+        title: "List Created",
+        description: `"${newListName}" has been created.`,
+        duration: 3000,
+      });
+      setNewListName("");
+    }
+  };
+
+  const addToCustomList = (listName: string, movie: Movie) => {
+    const currentList = JSON.parse(localStorage.getItem(`list_${listName}`) || '[]');
+    const updatedList = [...currentList, movie];
+    localStorage.setItem(`list_${listName}`, JSON.stringify(updatedList));
+    
+    toast({
+      title: "Added to List",
+      description: `"${movie.title}" has been added to "${listName}".`,
+      duration: 3000,
+    });
+
+    // Refresh the movies if we're currently viewing the list we just added to
+    if (type === 'custom' && listName === listName) {
+      setMovies(updatedList);
+    }
+  };
 
   const handleWatchlistToggle = (movieId: number) => {
-    setWatchlistMovies(prev => 
+    setMovies(prev => 
       prev.map(movie => {
         if (movie.id === movieId) {
           const newStatus = !movie.inWatchlist;
@@ -70,42 +112,15 @@ const MovieList = ({ type, filter = "all", listName = "" }: MovieListProps) => {
     );
   };
 
-  const createNewList = () => {
-    if (newListName.trim()) {
-      setCustomLists(prev => ({
-        ...prev,
-        [newListName]: []
-      }));
-      toast({
-        title: "List Created",
-        description: `"${newListName}" has been created.`,
-        duration: 3000,
-      });
-      setNewListName("");
-    }
-  };
-
-  const addToCustomList = (listName: string, movie: Movie) => {
-    setCustomLists(prev => ({
-      ...prev,
-      [listName]: [...(prev[listName] || []), movie]
-    }));
-    toast({
-      title: "Added to List",
-      description: `"${movie.title}" has been added to "${listName}".`,
-      duration: 3000,
-    });
-  };
-
   // Filter movies based on the filter prop
   const filteredMovies = filter === "all" 
-    ? watchlistMovies 
-    : watchlistMovies.filter(movie => {
+    ? movies 
+    : movies.filter(movie => {
         if (filter === "inWatchlist") return movie.inWatchlist;
         return true;
       });
 
-  if (type === "custom" && !customLists[listName]) {
+  if (type === "custom" && !customLists.includes(listName)) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
         <Film className="mb-4 h-16 w-16 text-cinema-sage opacity-50" />
@@ -217,7 +232,7 @@ const MovieList = ({ type, filter = "all", listName = "" }: MovieListProps) => {
                           </DialogDescription>
                         </DialogHeader>
                         <div className="space-y-2">
-                          {Object.keys(customLists).map((listName) => (
+                          {customLists.map((listName) => (
                             <Button
                               key={listName}
                               variant="outline"
